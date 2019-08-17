@@ -33,18 +33,16 @@ export default combineReducers({
   error
 });
 
-export const getShows = (state) => {
+export const getShows = state => {
   const { shows } = state.search;
 
-  return shows.map(item => {
-    return {
-      id: item.id,
-      name: item.name,
-      summary: item.summary,
-      image: item.image ? item.image.medium : null,
-    }
-  })
+  return shows.map(item => ({
+    id: item.id,
+    name: item.name,
+    summary: item.summary,
+    image: item.image ? item.image.medium : null
+  }));
 };
 
-export const getIsLoading = (state) => state.shows.isLoading;
-export const getError= (state) => state.shows.error;
+export const getIsLoading = state => state.shows.isLoading;
+export const getError = state => state.shows.error;
