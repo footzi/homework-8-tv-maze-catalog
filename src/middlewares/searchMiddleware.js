@@ -10,7 +10,7 @@ import {
     searchRequest,
     searchSuccess,
     searchFailure,
-  } from '../reducers/actions';
+  } from '../actions';
 import { search} from '../api';
 
 const searchMiddleware = store => next => async action => {

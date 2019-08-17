@@ -6,8 +6,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './Search.module.css';
-import { searchRequest } from '../../reducers/actions';
-import { ShowPreview } from '../ShowPreview';
+import { searchRequest } from '../../actions';
+import ShowPreview from '../ShowPreview';
+import { getShows, getIsLoading, getError } from '../../reducers/search';
 
 class Search extends Component {
   state = { value: '' };
@@ -28,13 +29,15 @@ class Search extends Component {
   };
 
   render() {
-    const { shows, isLoading } = this.props;
+    const { shows, isLoading, error } = this.props;
+
+    if (error) return <p>Произошла сетевая ошибка</p>
 
     return (
       <div>
         <div className={styles.previewList}>
           <input
-            className={styles.input}
+            className={`${styles.input} t-input`}
             placeholder="Название сериала"
             type="text"
             onChange={this.onChange}
@@ -47,9 +50,9 @@ class Search extends Component {
               Найти
             </button>
           </div>
-          {isLoading && <div>Идет поиск</div>}
+          {isLoading && <div>Идет поиск...</div>}
         </div>
-        <div className={styles.searchPanel}>
+        <div className={`${styles.searchPanel} t-search-result`}>
           {shows.map(({ image, name, id, summary }) => (
             <ShowPreview
               key={id}
@@ -66,8 +69,9 @@ class Search extends Component {
 }
 
 const mapStateToProps = state => ({
-  shows: state.search.shows,
-  isLoading: state.search.isLoading
+  shows: getShows(state),
+  isLoading: getIsLoading(state),
+  error: getError(state)
 });
 
 const mapDispatchToProps = { searchRequest };
